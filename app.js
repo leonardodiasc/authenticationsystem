@@ -12,6 +12,12 @@ var thisSession = {
 // use sessions for tracking logins
 app.use(session(thisSession));
 
+//make user ID available for the templates
+app.use(function(req,res,next){
+  res.locals.currentUser = req.session.userId;
+  next();
+});
+
 mongoose.connect("mongodb://localhost:27017/bookworm");
 var db = mongoose.connection;
 
