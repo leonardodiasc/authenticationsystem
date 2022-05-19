@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/user');
 // GET / register
 router.get('/register', (req,res,next) => {
   return res.render('register', { title: 'Sign up'});
@@ -7,7 +8,22 @@ router.get('/register', (req,res,next) => {
 
 //POST/ Register
 router.post('/register', (req,res,next)=>{
-  return res.send('User created');
+  if (req.body.email &&
+      req.body.name &&
+      req.body.favoriteBook &&
+      req.body.password &&
+      req.body.confirmPassword){
+        if(req.body.password !== req.body.confirmPassword){
+          var err = new Error('Passwords not matching, retype them.');
+          err.status = 400;
+          return next(err);
+        }
+        
+      } else{
+        var err = new Error('Fill all fields, dear one.');
+        err.status = 400;
+        return next(err);
+      }
 });
 // GET /
 router.get('/', function(req, res, next) {
