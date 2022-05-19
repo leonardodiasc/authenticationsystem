@@ -18,7 +18,20 @@ router.post('/register', (req,res,next)=>{
           err.status = 400;
           return next(err);
         }
-        
+        var userInfo = {
+          email: req.body.email,
+          name: req.body.name,
+          favoriteBook: req.body.favoriteBook,
+          password: req.body.password
+        }
+        //inserting the user information 'userInfo' into mongodb
+        User.create(userInfo, (error, user)=>{
+          if (error){
+            return next(error);
+          } else {
+            return res.redirect('/profile');
+          }
+        });
       } else{
         var err = new Error('Fill all fields, dear one.');
         err.status = 400;
