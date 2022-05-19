@@ -19,6 +19,19 @@ router.get('/profile', function(req, res, next){
         }
       });
 });
+
+//GET log out
+router.get('/logout', function(req,res,next){
+  if(req.session){
+    req.session.destroy(function(err){
+      if(err){
+        return next(err);
+      } else{
+        return res.redirect('/');
+      }
+    });
+  }
+});
 // GET and POST login
 router.get('/login', function(req,res,next){
   return res.render('login',{ title: 'Log In'});
