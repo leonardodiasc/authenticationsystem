@@ -2,6 +2,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var app = express();
+var session = require('express-session');
+var thisSession = {
+  secret:'marmelada de banana bananada de marmelo',
+  resave: true,
+  saveUninitialized: false
+}
+
+// use sessions for tracking logins
+app.use(session(thisSession));
 
 mongoose.connect("mongodb://localhost:27017/bookworm");
 var db = mongoose.connection;
