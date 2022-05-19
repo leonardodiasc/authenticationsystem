@@ -4,7 +4,8 @@ var User = require('../models/user');
 var mid = require('../middleware');
 
 //GET profile
-router.get('/profile', function(req, res, next){
+
+router.get('/profile', mid.requiresLogIn, function(req, res, next){
   if (!req.session.userId){
     var err = new Error("Viewing this page requires authentication.");
     err.status = 403;

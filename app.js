@@ -3,25 +3,31 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var app = express();
 var session = require('express-session');
-var thisSession = {
-  secret:'marmelada de banana bananada de marmelo',
+var MongoStore = require('connect-mongo');
+
+mongoose.connect("mongodb://localhost:27017/bookworm");
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error'));
+
+
+app.use(session({
+  secret: 'marmelada de banana bananada de marmelo',
   resave: true,
-  saveUninitialized: false
-}
+  saveUninitialized: false,
+   store: MongoStore.create({
+    mongoUrl: 'mongodb://localhost:27017/bookworm'
+  })
+}));
 
 // use sessions for tracking logins
-app.use(session(thisSession));
+
 
 //make user ID available for the templates
 app.use(function(req,res,next){
   res.locals.currentUser = req.session.userId;
   next();
 });
-
-mongoose.connect("mongodb://localhost:27017/bookworm");
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error'));
 // parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
