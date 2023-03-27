@@ -7,7 +7,7 @@ var mid = require('../middleware');
 
 router.get('/profile', mid.requiresLogIn, function(req, res, next){
   if (!req.session.userId){
-    var err = new Error("Viewing this page requires authentication.");
+    var err = new Error("Error!");
     err.status = 403;
     return next(err);
   }
